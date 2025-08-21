@@ -21,6 +21,6 @@ public class ReferralSource {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "referral_source_type")
-    private ReferralSourceType sourceType;
+    private ReferralSourceType referralSourceType;
 
 }

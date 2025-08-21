@@ -8,9 +8,7 @@ import bwg.jobTracker.job_tracker.exception.CompanyNotFoundException;
 import bwg.jobTracker.job_tracker.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
