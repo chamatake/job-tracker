@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class JobPosting {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

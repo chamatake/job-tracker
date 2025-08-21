@@ -18,7 +18,4 @@ public class Company {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Version
-    @Column(name = "VERSION")
-    private Long version;
 }
