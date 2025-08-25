@@ -1,11 +1,13 @@
 package bwg.jobTracker.job_tracker;
 
 import bwg.jobTracker.job_tracker.dto.CompanyDTO;
+import bwg.jobTracker.job_tracker.dto.InterviewDTO;
 import bwg.jobTracker.job_tracker.dto.JobPostingDTO;
 import bwg.jobTracker.job_tracker.dto.ReferralSourceDTO;
-import bwg.jobTracker.job_tracker.entity.Company;
-import bwg.jobTracker.job_tracker.entity.JobPosting;
-import bwg.jobTracker.job_tracker.entity.ReferralSource;
+import bwg.jobTracker.job_tracker.entity.*;
+import bwg.jobTracker.job_tracker.enums.InterviewType;
+
+import java.time.LocalDate;
 
 public class MapperUtil {
 
@@ -20,6 +22,16 @@ public class MapperUtil {
         return new CompanyDTO(
                 company.getId(),
                 company.getName()
+        );
+    }
+
+    public static InterviewDTO toInterviewDTO(Interview interview) {
+        return new InterviewDTO(
+                interview.getId(),
+                interview.getJobApplication(),
+                interview.getInterviewType(),
+                interview.getInterviewDate(),
+                interview.getNotes()
         );
     }
 
