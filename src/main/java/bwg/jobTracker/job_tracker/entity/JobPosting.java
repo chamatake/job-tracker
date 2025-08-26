@@ -3,7 +3,6 @@ package bwg.jobTracker.job_tracker.entity;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
 import bwg.jobTracker.job_tracker.enums.Technology;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,6 +51,9 @@ public class JobPosting {
     @Column(name = "preferred_tech")
     private Set<Technology> preferredTech;
 
+    @ManyToOne
+    @JoinColumn(name = "referral_source_id")
+    private ReferralSource referralSource;
 
     @Version
     @Column(name = "VERSION")

@@ -1,6 +1,5 @@
 package bwg.jobTracker.job_tracker.controller;
 
-import bwg.jobTracker.job_tracker.dto.CompanyDTO;
 import bwg.jobTracker.job_tracker.dto.JobPostingCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobPostingDTO;
 import bwg.jobTracker.job_tracker.service.JobPostingService;
@@ -29,8 +28,13 @@ public class JobPostingController {
         return this.jobPostingService.findAll();
     }
 
-    @GetMapping("/{companyName}")
+    @GetMapping
     public List<JobPostingDTO> findAllByCompanyName(@RequestParam String companyName) {
         return this.jobPostingService.findAllByCompanyName(companyName);
+    }
+
+    @GetMapping("/{id}")
+    public JobPostingDTO findById(@PathVariable Long id) {
+        return this.jobPostingService.findById(id);
     }
 }

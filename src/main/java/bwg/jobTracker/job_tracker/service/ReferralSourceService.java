@@ -5,7 +5,6 @@ import bwg.jobTracker.job_tracker.dto.ReferralSourceCreateRequest;
 import bwg.jobTracker.job_tracker.dto.ReferralSourceDTO;
 import bwg.jobTracker.job_tracker.entity.ReferralSource;
 import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
-import bwg.jobTracker.job_tracker.exception.ReferralSourceNotFound;
 import bwg.jobTracker.job_tracker.repository.ReferralSourceRepository;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Service
 public class ReferralSourceService {
-    private ReferralSourceRepository referralSourceRepository;
+    private final ReferralSourceRepository referralSourceRepository;
 
     public ReferralSourceService(ReferralSourceRepository repository) {
         this.referralSourceRepository = repository;
@@ -36,7 +35,6 @@ public class ReferralSourceService {
 
     public List<ReferralSourceDTO> findAllBySourceType(ReferralSourceType type) {
         return this.referralSourceRepository.findAllByReferralSourceType(type)
-                .orElseThrow(() -> new ReferralSourceNotFound("No ReferralSource found with type = " + type.name()))
                 .stream()
                 .map(MapperUtil::toReferralSourceDTO)
                 .toList();

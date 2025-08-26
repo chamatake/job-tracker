@@ -4,7 +4,6 @@ import bwg.jobTracker.job_tracker.MapperUtil;
 import bwg.jobTracker.job_tracker.dto.InterviewCreateRequest;
 import bwg.jobTracker.job_tracker.dto.InterviewDTO;
 import bwg.jobTracker.job_tracker.entity.Interview;
-import bwg.jobTracker.job_tracker.exception.InterviewNotFoundException;
 import bwg.jobTracker.job_tracker.repository.InterviewRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,9 +42,7 @@ public class InterviewService {
         try {
             LocalDate convertedDate = LocalDate.parse(interviewDate);
 
-            return this.interviewRepository.findAllByInterviewDate(convertedDate)
-                    .orElseThrow(() -> new InterviewNotFoundException("No interviews were found for date = " + interviewDate.toString()))
-                    .stream()
+            return this.interviewRepository.findAllByInterviewDate(convertedDate).stream()
                     .map(MapperUtil::toInterviewDTO)
                     .toList();
         } catch (DateTimeParseException ex) {

@@ -29,7 +29,7 @@ public class InterviewController {
     }
 
     @GetMapping("/{interviewDate}")
-    public List<InterviewDTO> findAllByInterviewDate(@RequestParam String dateString) {
+    public List<InterviewDTO> findAllByInterviewDate(@PathVariable String dateString) {
         return this.interviewService.findAllByInterviewDate(dateString);
     }
 

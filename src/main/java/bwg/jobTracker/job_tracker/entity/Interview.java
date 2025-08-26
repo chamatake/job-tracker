@@ -18,7 +18,7 @@ public class Interview {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_application_id")
     private JobApplication jobApplication;
 

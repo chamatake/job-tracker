@@ -26,6 +26,13 @@ public class CompanyService {
         return MapperUtil.toCompanyDTO(created);
     }
 
+    public CompanyDTO findById(Long id) {
+        Company existing = this.companyRepository.findById(id)
+                .orElseThrow(() -> new CompanyNotFoundException("Company search by id failed. id: " + id));
+
+        return MapperUtil.toCompanyDTO(existing);
+    }
+
     public CompanyDTO findByName(String name) {
         Company existing = this.companyRepository.findByName(name)
                 .orElseThrow(() -> new CompanyNotFoundException("Company search by name failed. name: " + name));
