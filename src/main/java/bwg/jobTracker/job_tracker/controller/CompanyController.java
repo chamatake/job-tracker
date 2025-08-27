@@ -23,7 +23,12 @@ public class CompanyController {
         return this.companyService.add(request);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/{id}")
+    public CompanyDTO findById(@PathVariable Long id) {
+        return this.companyService.findById(id);
+    }
+
+    @GetMapping
     public CompanyDTO findByName(@RequestParam String name) {
         return this.companyService.findByName(name);
     }

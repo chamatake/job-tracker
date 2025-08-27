@@ -1,15 +1,20 @@
 package bwg.jobTracker.job_tracker;
 
-import bwg.jobTracker.job_tracker.dto.CompanyDTO;
-import bwg.jobTracker.job_tracker.dto.InterviewDTO;
-import bwg.jobTracker.job_tracker.dto.JobPostingDTO;
-import bwg.jobTracker.job_tracker.dto.ReferralSourceDTO;
+import bwg.jobTracker.job_tracker.dto.*;
 import bwg.jobTracker.job_tracker.entity.*;
-import bwg.jobTracker.job_tracker.enums.InterviewType;
 
-import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class MapperUtil {
+
+    public static ApplicationStatusDTO toApplicationStatusDTO(ApplicationStatus status) {
+        return new ApplicationStatusDTO(
+                status.getId(),
+                toJobApplicationDTO(status.getJobApplication()),
+                status.getApplicationStatusType(),
+                status.getActiveDate()
+        );
+    }
 
     public static Company toCompany(CompanyDTO dto) {
         Company company = new Company();
@@ -28,17 +33,31 @@ public class MapperUtil {
     public static InterviewDTO toInterviewDTO(Interview interview) {
         return new InterviewDTO(
                 interview.getId(),
-                interview.getJobApplication(),
+                toJobApplicationDTO(interview.getJobApplication()),
                 interview.getInterviewType(),
                 interview.getInterviewDate(),
                 interview.getNotes()
         );
     }
 
+    public static JobApplicationDTO toJobApplicationDTO(JobApplication application) {
+        return new JobApplicationDTO(
+                application.getId(),
+                toJobPostingDTO(application.getJobPosting()),
+                application.getApplicationStatuses().stream()
+                        .map(MapperUtil::toApplicationStatusDTO)
+                        .collect(Collectors.toSet()),
+                toApplicationStatusDTO(application.getCurrentStatus()),
+                application.getAppliedDate(),
+                application.getResumeFilename(),
+                application.getCoverLetterFilename()
+        );
+    }
+
     public static JobPostingDTO toJobPostingDTO(JobPosting jobPosting) {
         return new JobPostingDTO(
             jobPosting.getId(),
-            jobPosting.getCompany(),
+            toCompanyDTO(jobPosting.getCompany()),
             jobPosting.getTitle(),
             jobPosting.getRequisitionId(),
             jobPosting.getUrl(),
@@ -46,7 +65,7 @@ public class MapperUtil {
             jobPosting.getSalaryRangeMax(),
             jobPosting.getOfficeSituation(),
             jobPosting.getRequiredTech(),
-            jobPosting.getPreferredTech()
+            jobPosting.getPreferredTech(), toReferralSourceDTO(jobPosting.getReferralSource())
         );
     }
 

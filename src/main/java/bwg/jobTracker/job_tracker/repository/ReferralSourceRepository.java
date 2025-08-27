@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ReferralSourceRepository extends JpaRepository<ReferralSource, Long> {
-    Optional<List<ReferralSource>> findAllByReferralSourceType(ReferralSourceType referralSourceType);
+    List<ReferralSource> findAllByReferralSourceType(ReferralSourceType referralSourceType);
 }

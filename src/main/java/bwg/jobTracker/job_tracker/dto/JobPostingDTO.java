@@ -1,6 +1,5 @@
 package bwg.jobTracker.job_tracker.dto;
 
-import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
 import bwg.jobTracker.job_tracker.enums.Technology;
 
@@ -8,7 +7,7 @@ import java.util.Set;
 
 public record JobPostingDTO(
         Long id,
-        Company company,
+        CompanyDTO company,
         String title,
         String requisitionId,
         String url,
@@ -16,5 +15,6 @@ public record JobPostingDTO(
         Long salaryRangeMax,
         OfficeSituation officeSituation,
         Set<Technology> requiredTech,
-        Set<Technology> preferredTech
+        Set<Technology> preferredTech,
+        ReferralSourceDTO referralSource
 ) {}

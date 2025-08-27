@@ -2,12 +2,11 @@ package bwg.jobTracker.job_tracker.controller;
 
 import bwg.jobTracker.job_tracker.dto.ReferralSourceCreateRequest;
 import bwg.jobTracker.job_tracker.dto.ReferralSourceDTO;
-import bwg.jobTracker.job_tracker.entity.ReferralSource;
 import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
-import bwg.jobTracker.job_tracker.exception.InvalidReferralSourceTypeException;
 import bwg.jobTracker.job_tracker.service.ReferralSourceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -32,12 +31,15 @@ public class ReferralSourceController {
     }
 
     @GetMapping("/{referralSourceType}")
-    public List<ReferralSourceDTO> findAllByReferralSourceType(@RequestParam String typeString) {
+    public List<ReferralSourceDTO> findAllByReferralSourceType(@PathVariable String typeString) {
         try {
             ReferralSourceType referralSourceType = ReferralSourceType.valueOf(typeString.toUpperCase());
             return this.referralSourceService.findAllBySourceType(referralSourceType);
         } catch (IllegalArgumentException ex) {
-            throw new InvalidReferralSourceTypeException("invalid referral source type: " + typeString);
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "invalid referral source type: " + typeString,
+                    ex);
         }
     }
 }

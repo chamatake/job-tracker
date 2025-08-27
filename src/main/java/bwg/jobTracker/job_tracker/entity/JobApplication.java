@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "job_application")
@@ -17,18 +19,14 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "job_posting_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_posting_id", unique = true)
     private JobPosting jobPosting;
 
-    @ManyToOne
-    @JoinColumn(name = "referral_source_id")
-    private ReferralSource referralSource;
+    @OneToMany(mappedBy = "jobApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "application_status_id")
-    private ApplicationStatus applicationStatus;
-
+    private ApplicationStatus currentStatus;
 
     @Column(name = "applied_date")
     private LocalDate appliedDate;
@@ -44,16 +42,31 @@ public class JobApplication {
     @Column(name = "VERSION")
     private Long version;
 
-    public class Builder {
+    public void updateStatus(ApplicationStatus newStatus) {
+        if (this.applicationStatuses.stream()
+                .map(ApplicationStatus::getApplicationStatusType)
+                .noneMatch(type -> type.equals(newStatus.getApplicationStatusType()))
+        ) {
+            this.applicationStatuses.add(newStatus);
+            newStatus.setJobApplication(this);
+            this.currentStatus = newStatus;
+        }
+    }
+
+    public Set<ApplicationStatus> getApplicationStatuses() {
+        return Set.copyOf(this.applicationStatuses);
+    }
+
+    public static class Builder {
         private Long id;
         private JobPosting jobPosting;
-        private ReferralSource referralSource;
-        private ApplicationStatus applicationStatus;
+        private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
+        private ApplicationStatus currentStatus;
         private LocalDate appliedDate;
         private String resumeFilename;
         private String coverLetterFilename;
 
-        public Builder builder() {
+        public Builder create() {
             return new Builder();
         }
 
@@ -67,13 +80,13 @@ public class JobApplication {
             return this;
         }
 
-        public Builder withReferralSource(ReferralSource referralSource) {
-            this.referralSource = referralSource;
+        public Builder withApplicationStatuses(Set<ApplicationStatus> statuses) {
+            this.applicationStatuses = Set.copyOf(statuses);
             return this;
         }
 
-        public Builder withApplicationStatus(ApplicationStatus status) {
-            this.applicationStatus = status;
+        public Builder withCurrentStatus(ApplicationStatus status) {
+            this.currentStatus = status;
             return this;
         }
 
@@ -96,8 +109,8 @@ public class JobApplication {
             JobApplication application = new JobApplication();
             application.setId(this.id);
             application.setJobPosting(this.jobPosting);
-            application.setReferralSource(this.referralSource);
-            application.setApplicationStatus(this.applicationStatus);
+            application.setApplicationStatuses(Set.copyOf(this.applicationStatuses));
+            application.setCurrentStatus(this.currentStatus);
             application.setAppliedDate(this.appliedDate);
             application.setResumeFilename(this.resumeFilename);
             application.setCoverLetterFilename(this.coverLetterFilename);
