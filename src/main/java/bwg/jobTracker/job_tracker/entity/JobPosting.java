@@ -5,6 +5,7 @@ import bwg.jobTracker.job_tracker.enums.Technology;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.util.Set;
@@ -21,23 +22,23 @@ public class JobPosting {
 
     @OneToMany
     @JoinColumn(name = "company_id")
-    private Company company;
+    @NonNull private Company company;
 
 
     @Column(name = "title", nullable = false)
-    private String title;
+    @NonNull private String title;
 
     @Column(name = "requisition_id")
     private String requisitionId;
 
-    @Column(name = "url")
-    private String url;
+    @Column(name = "posting_url")
+    private String postingUrl;
 
     @Column(name = "salary_range_min")
-    private Long salaryRangeMin;
+    private Integer salaryRangeMin;
 
     @Column(name = "salary_range_max")
-    private Long salaryRangeMax;
+    private Integer salaryRangeMax;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "office_situation")

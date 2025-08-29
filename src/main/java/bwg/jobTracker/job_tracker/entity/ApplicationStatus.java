@@ -19,7 +19,7 @@ public class ApplicationStatus {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_application_id")
-    private JobApplication jobApplication;
+    @NonNull private JobApplication jobApplication;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "application_status_type")

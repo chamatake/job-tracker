@@ -17,8 +17,8 @@ public class JobPostingCreateRequest {
     @NonNull private String title;
     private String requisitionId;
     private String url;
-    private Long salaryRangeMin;
-    private Long salaryRangeMax;
+    private Integer salaryRangeMin;
+    private Integer salaryRangeMax;
     @NonNull OfficeSituation officeSituation;
     private Set<Technology> requiredTech;
     private Set<Technology> preferredTech;

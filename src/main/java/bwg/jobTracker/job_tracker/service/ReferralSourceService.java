@@ -20,7 +20,7 @@ public class ReferralSourceService {
 
     public ReferralSourceDTO add(ReferralSourceCreateRequest request) {
         ReferralSource referralSource = new ReferralSource();
-        referralSource.setName(request.getName());
+        referralSource.setReferralName(request.getName());
         referralSource.setReferralSourceType(request.getReferralSourceType());
         ReferralSource added = this.referralSourceRepository.save(referralSource);
 

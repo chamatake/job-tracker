@@ -1,5 +1,7 @@
 package bwg.jobTracker.job_tracker.dto;
 
+import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ public record JobApplicationDTO(
         JobPostingDTO jobPosting,
         Set<ApplicationStatusDTO> applicationStatuses,
         ApplicationStatusDTO currentStatus,
+        ApplicationStatusType currentStatusType,
         LocalDate appliedDate,
         String resumeFilename,
         String coverLetterFilename

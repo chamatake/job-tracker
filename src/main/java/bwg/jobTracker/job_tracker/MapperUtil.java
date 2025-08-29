@@ -19,14 +19,14 @@ public class MapperUtil {
     public static Company toCompany(CompanyDTO dto) {
         Company company = new Company();
         company.setId(dto.id());
-        company.setName(dto.name());
+        company.setCompanyName(dto.name());
         return company;
     }
 
     public static CompanyDTO toCompanyDTO(Company company) {
         return new CompanyDTO(
                 company.getId(),
-                company.getName()
+                company.getCompanyName()
         );
     }
 
@@ -48,6 +48,7 @@ public class MapperUtil {
                         .map(MapperUtil::toApplicationStatusDTO)
                         .collect(Collectors.toSet()),
                 toApplicationStatusDTO(application.getCurrentStatus()),
+                application.getCurrentStatusType(),
                 application.getAppliedDate(),
                 application.getResumeFilename(),
                 application.getCoverLetterFilename()
@@ -60,7 +61,7 @@ public class MapperUtil {
             toCompanyDTO(jobPosting.getCompany()),
             jobPosting.getTitle(),
             jobPosting.getRequisitionId(),
-            jobPosting.getUrl(),
+            jobPosting.getPostingUrl(),
             jobPosting.getSalaryRangeMin(),
             jobPosting.getSalaryRangeMax(),
             jobPosting.getOfficeSituation(),
@@ -72,7 +73,7 @@ public class MapperUtil {
     public static ReferralSourceDTO toReferralSourceDTO(ReferralSource referralSource) {
         return new ReferralSourceDTO(
                 referralSource.getId(),
-                referralSource.getName(),
+                referralSource.getReferralName(),
                 referralSource.getReferralSourceType()
         );
     }

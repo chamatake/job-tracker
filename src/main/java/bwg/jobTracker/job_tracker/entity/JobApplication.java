@@ -1,5 +1,6 @@
 package bwg.jobTracker.job_tracker.entity;
 
+import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,9 @@ public class JobApplication {
 
     private ApplicationStatus currentStatus;
 
+    @Column(name = "current_status_type")
+    private ApplicationStatusType currentStatusType;
+
     @Column(name = "applied_date")
     private LocalDate appliedDate;
 
@@ -50,6 +54,7 @@ public class JobApplication {
             this.applicationStatuses.add(newStatus);
             newStatus.setJobApplication(this);
             this.currentStatus = newStatus;
+            this.currentStatusType = newStatus.getApplicationStatusType();
         }
     }
 
@@ -62,6 +67,7 @@ public class JobApplication {
         private JobPosting jobPosting;
         private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
         private ApplicationStatus currentStatus;
+        private ApplicationStatusType currentStatusType;
         private LocalDate appliedDate;
         private String resumeFilename;
         private String coverLetterFilename;
@@ -87,6 +93,11 @@ public class JobApplication {
 
         public Builder withCurrentStatus(ApplicationStatus status) {
             this.currentStatus = status;
+            return this;
+        }
+
+        public Builder withCurrentStatusType(ApplicationStatusType statusType) {
+            this.currentStatusType = statusType;
             return this;
         }
 

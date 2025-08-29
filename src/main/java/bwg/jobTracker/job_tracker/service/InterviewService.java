@@ -53,4 +53,14 @@ public class InterviewService {
             );
         }
     }
+
+    public InterviewDTO findById(Long id) {
+        Interview existing = this.interviewRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "No interview found for id = " + id
+                ));
+
+        return MapperUtil.toInterviewDTO(existing);
+    }
 }

@@ -35,6 +35,7 @@ public class JobApplicationService {
                 .withJobPosting(request.getJobPosting())
                 .withApplicationStatuses(Set.of(initialStatus))
                 .withCurrentStatus(initialStatus)
+                .withCurrentStatusType(initialStatus.getApplicationStatusType())
                 .withAppliedDate(now)
                 .withResumeFilename(request.getResumeFilename())
                 .withCoverLetterFileName(request.getCoverLetterFilename())

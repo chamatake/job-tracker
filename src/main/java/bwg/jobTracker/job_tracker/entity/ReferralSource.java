@@ -4,6 +4,7 @@ import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Entity
@@ -16,11 +17,11 @@ public class ReferralSource {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "referral_name")
+    @NonNull private String referralName;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "referral_source_type")
-    private ReferralSourceType referralSourceType;
+    @NonNull private ReferralSourceType referralSourceType;
 
 }

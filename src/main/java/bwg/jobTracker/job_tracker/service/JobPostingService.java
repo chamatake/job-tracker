@@ -24,7 +24,7 @@ public class JobPostingService {
         posting.setCompany(request.getCompany());
         posting.setTitle(request.getTitle());
         posting.setRequisitionId(request.getRequisitionId());
-        posting.setUrl(request.getUrl());
+        posting.setPostingUrl(request.getUrl());
         posting.setSalaryRangeMin(request.getSalaryRangeMin());
         posting.setSalaryRangeMax(request.getSalaryRangeMax());
         posting.setOfficeSituation(request.getOfficeSituation());

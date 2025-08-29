@@ -4,6 +4,7 @@ import bwg.jobTracker.job_tracker.enums.InterviewType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -20,12 +21,12 @@ public class Interview {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_application_id")
-    private JobApplication jobApplication;
+    @NonNull private JobApplication jobApplication;
 
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "interview_type")
-    private InterviewType interviewType;
+    @NonNull private InterviewType interviewType;
 
     @Column(name = "interview_date")
     private LocalDate interviewDate;

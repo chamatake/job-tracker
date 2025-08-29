@@ -20,7 +20,7 @@ public class CompanyService {
 
     public CompanyDTO add(CompanyCreateRequest request) {
         Company company = new Company();
-        company.setName(request.getName());
+        company.setCompanyName(request.getName());
         Company created = this.companyRepository.save(company);
 
         return MapperUtil.toCompanyDTO(created);
