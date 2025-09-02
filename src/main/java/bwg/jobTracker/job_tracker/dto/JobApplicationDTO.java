@@ -9,7 +9,6 @@ public record JobApplicationDTO(
         Long id,
         JobPostingDTO jobPosting,
         Set<ApplicationStatusDTO> applicationStatuses,
-        ApplicationStatusDTO currentStatus,
         ApplicationStatusType currentStatusType,
         LocalDate appliedDate,
         String resumeFilename,

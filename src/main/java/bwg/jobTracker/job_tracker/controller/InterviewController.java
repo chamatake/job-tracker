@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/interview")
+@RequestMapping("/api/interviews")
 public class InterviewController {
     private final InterviewService interviewService;
 
@@ -19,18 +19,18 @@ public class InterviewController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InterviewDTO add(@RequestBody InterviewCreateRequest request) {
+    public InterviewDTO create(@RequestBody InterviewCreateRequest request) {
         return this.interviewService.add(request);
     }
 
     @GetMapping
-    public List<InterviewDTO> findAll() {
+    public List<InterviewDTO> getAll() {
         return this.interviewService.findAll();
     }
 
-    @GetMapping("/{interviewDate}")
-    public List<InterviewDTO> findAllByInterviewDate(@PathVariable String dateString) {
-        return this.interviewService.findAllByInterviewDate(dateString);
+    @GetMapping(params = "interviewDate")
+    public List<InterviewDTO> getAllByInterviewDate(@RequestParam String interviewDate) {
+        return this.interviewService.findAllByInterviewDate(interviewDate);
     }
 
 }

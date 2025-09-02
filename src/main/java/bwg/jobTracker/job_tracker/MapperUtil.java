@@ -47,7 +47,6 @@ public class MapperUtil {
                 application.getApplicationStatuses().stream()
                         .map(MapperUtil::toApplicationStatusDTO)
                         .collect(Collectors.toSet()),
-                toApplicationStatusDTO(application.getCurrentStatus()),
                 application.getCurrentStatusType(),
                 application.getAppliedDate(),
                 application.getResumeFilename(),

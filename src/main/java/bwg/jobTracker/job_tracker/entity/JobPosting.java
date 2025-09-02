@@ -20,7 +20,7 @@ public class JobPosting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "company_id")
     @NonNull private Company company;
 

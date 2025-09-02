@@ -27,8 +27,6 @@ public class JobApplication {
     @OneToMany(mappedBy = "jobApplication", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
 
-    private ApplicationStatus currentStatus;
-
     @Column(name = "current_status_type")
     private ApplicationStatusType currentStatusType;
 
@@ -53,7 +51,6 @@ public class JobApplication {
         ) {
             this.applicationStatuses.add(newStatus);
             newStatus.setJobApplication(this);
-            this.currentStatus = newStatus;
             this.currentStatusType = newStatus.getApplicationStatusType();
         }
     }
@@ -66,7 +63,6 @@ public class JobApplication {
         private Long id;
         private JobPosting jobPosting;
         private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
-        private ApplicationStatus currentStatus;
         private ApplicationStatusType currentStatusType;
         private LocalDate appliedDate;
         private String resumeFilename;
@@ -91,10 +87,10 @@ public class JobApplication {
             return this;
         }
 
-        public Builder withCurrentStatus(ApplicationStatus status) {
+/*        public Builder withCurrentStatus(ApplicationStatus status) {
             this.currentStatus = status;
             return this;
-        }
+        }*/
 
         public Builder withCurrentStatusType(ApplicationStatusType statusType) {
             this.currentStatusType = statusType;
@@ -121,7 +117,7 @@ public class JobApplication {
             application.setId(this.id);
             application.setJobPosting(this.jobPosting);
             application.setApplicationStatuses(Set.copyOf(this.applicationStatuses));
-            application.setCurrentStatus(this.currentStatus);
+            application.setCurrentStatusType(this.currentStatusType);
             application.setAppliedDate(this.appliedDate);
             application.setResumeFilename(this.resumeFilename);
             application.setCoverLetterFilename(this.coverLetterFilename);

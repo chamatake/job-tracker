@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/jobPosting")
+@RequestMapping("/api/job-postings")
 public class JobPostingController {
     private final JobPostingService jobPostingService;
 
@@ -19,22 +19,22 @@ public class JobPostingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public JobPostingDTO add(@RequestBody JobPostingCreateRequest request) {
+    public JobPostingDTO create(@RequestBody JobPostingCreateRequest request) {
         return this.jobPostingService.add(request);
     }
 
     @GetMapping
-    public List<JobPostingDTO> findAll() {
+    public List<JobPostingDTO> getAll() {
         return this.jobPostingService.findAll();
     }
 
-    @GetMapping
-    public List<JobPostingDTO> findAllByCompanyName(@RequestParam String companyName) {
-        return this.jobPostingService.findAllByCompanyName(companyName);
+    @GetMapping("/{id}")
+    public JobPostingDTO getById(@PathVariable Long id) {
+        return this.jobPostingService.findById(id);
     }
 
-    @GetMapping("/{id}")
-    public JobPostingDTO findById(@PathVariable Long id) {
-        return this.jobPostingService.findById(id);
+    @GetMapping(path = "/company", params = "companyName")
+    public List<JobPostingDTO> getAllByCompanyName(@RequestParam String companyName) {
+        return this.jobPostingService.findAllByCompanyName(companyName);
     }
 }

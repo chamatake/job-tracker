@@ -32,4 +32,8 @@ public class ApplicationStatus {
     @Version
     @Column(name = "VERSION")
     private Long version;
+
+    public ApplicationStatus(ApplicationStatusType applicationStatusType) {
+        this.applicationStatusType = applicationStatusType;
+    }
 }

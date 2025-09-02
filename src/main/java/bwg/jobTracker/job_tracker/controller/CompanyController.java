@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/company")
+@RequestMapping("/api/companies")
 public class CompanyController {
     private final CompanyService companyService;
 
@@ -19,22 +19,22 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompanyDTO add(@RequestBody CompanyCreateRequest request) {
+    public CompanyDTO create(@RequestBody CompanyCreateRequest request) {
         return this.companyService.add(request);
     }
 
     @GetMapping("/{id}")
-    public CompanyDTO findById(@PathVariable Long id) {
+    public CompanyDTO getById(@PathVariable Long id) {
         return this.companyService.findById(id);
     }
 
-    @GetMapping
-    public CompanyDTO findByName(@RequestParam String name) {
-        return this.companyService.findByName(name);
+    @GetMapping(params = "companyName")
+    public CompanyDTO getByCompanyName(@RequestParam String companyName) {
+        return this.companyService.findByCompanyName(companyName);
     }
 
     @GetMapping
-    public List<CompanyDTO> findAll() {
+    public List<CompanyDTO> getAll() {
        return this.companyService.findAll();
     }
 }

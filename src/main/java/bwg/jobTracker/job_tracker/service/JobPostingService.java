@@ -48,7 +48,7 @@ public class JobPostingService {
     }
 
     public List<JobPostingDTO> findAllByCompanyName(String companyName) {
-        return this.jobPostingRepository.findAllByCompany_name(companyName).stream()
+        return this.jobPostingRepository.findAllByCompany_companyName(companyName).stream()
                 .map(MapperUtil::toJobPostingDTO)
                 .toList();
     }

@@ -34,7 +34,6 @@ public class JobApplicationService {
         JobApplication application = new JobApplication.Builder()
                 .withJobPosting(request.getJobPosting())
                 .withApplicationStatuses(Set.of(initialStatus))
-                .withCurrentStatus(initialStatus)
                 .withCurrentStatusType(initialStatus.getApplicationStatusType())
                 .withAppliedDate(now)
                 .withResumeFilename(request.getResumeFilename())
@@ -58,23 +57,16 @@ public class JobApplicationService {
         return MapperUtil.toJobApplicationDTO(existing);
     }
 
-    public JobApplicationDTO updateStatusById(Long jobApplicationId, String statusTypeString) {
+    public JobApplicationDTO updateStatusById(Long jobApplicationId, ApplicationStatusType statusType) {
         JobApplication existing = this.jobApplicationRepository.findById(jobApplicationId)
                 .orElseThrow(() -> new JobApplicationNotFoundException("No job application exists for id = " + jobApplicationId));
 
-        try {
-            ApplicationStatusType statusType = ApplicationStatusType.valueOf(statusTypeString.toUpperCase());
-            ApplicationStatus updatedStatus = new ApplicationStatus(statusType);
-            updatedStatus.setJobApplication(existing);
-            updatedStatus.setActiveDate(LocalDate.now());
-            existing.updateStatus(updatedStatus);
+        ApplicationStatus updatedStatus = new ApplicationStatus(statusType);
+        updatedStatus.setJobApplication(existing);
+        updatedStatus.setActiveDate(LocalDate.now());
+        existing.updateStatus(updatedStatus);
 
-            return MapperUtil.toJobApplicationDTO(this.jobApplicationRepository.save(existing));
-        } catch (IllegalArgumentException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "invalid application status type: " + statusTypeString,
-                    ex);
-        }
+        return MapperUtil.toJobApplicationDTO(this.jobApplicationRepository.save(existing));
+
     }
 }

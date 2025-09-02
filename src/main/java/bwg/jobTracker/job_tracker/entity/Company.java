@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "company")
 @NoArgsConstructor

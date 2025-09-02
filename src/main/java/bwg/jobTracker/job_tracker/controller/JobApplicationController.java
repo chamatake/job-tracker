@@ -1,8 +1,8 @@
 package bwg.jobTracker.job_tracker.controller;
 
+import bwg.jobTracker.job_tracker.dto.ApplicationStatusUpdateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationDTO;
-import bwg.jobTracker.job_tracker.entity.JobApplication;
 import bwg.jobTracker.job_tracker.service.JobApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/jobApplication")
+@RequestMapping("/api/job-applications")
 public class JobApplicationController {
     private final JobApplicationService jobApplicationService;
 
@@ -20,23 +20,23 @@ public class JobApplicationController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public JobApplicationDTO add(JobApplicationCreateRequest request) {
+    public JobApplicationDTO create(JobApplicationCreateRequest request) {
         return this.jobApplicationService.add(request);
 
     }
 
     @GetMapping("/{id}")
-    public JobApplicationDTO findById(@PathVariable Long id) {
+    public JobApplicationDTO getById(@PathVariable Long id) {
         return this.jobApplicationService.findById(id);
     }
 
     @GetMapping
-    public List<JobApplicationDTO> findAll() {
+    public List<JobApplicationDTO> getAll() {
         return this.jobApplicationService.findAll();
     }
 
-    @PutMapping("/{id}/update/{applicationStatusType}")
-    public JobApplicationDTO updateStatusById(@PathVariable Long id, @PathVariable String applicationStatusType) {
-        return this.jobApplicationService.updateStatusById(id, applicationStatusType);
+    @PatchMapping("/{id}/status")
+    public JobApplicationDTO updateStatusTypeById(@PathVariable Long id, @RequestBody ApplicationStatusUpdateRequest request) {
+        return this.jobApplicationService.updateStatusById(id, request.getApplicationStatusType());
     }
 }

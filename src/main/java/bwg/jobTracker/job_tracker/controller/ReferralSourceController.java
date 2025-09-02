@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/referralSource")
+@RequestMapping("/api/referral-sources")
 public class ReferralSourceController {
     private final ReferralSourceService referralSourceService;
 
@@ -21,17 +21,17 @@ public class ReferralSourceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReferralSourceDTO add(@RequestBody ReferralSourceCreateRequest request) {
+    public ReferralSourceDTO create(@RequestBody ReferralSourceCreateRequest request) {
         return this.referralSourceService.add(request);
     }
 
     @GetMapping
-    public List<ReferralSourceDTO> findAll() {
+    public List<ReferralSourceDTO> getAll() {
         return this.referralSourceService.findAll();
     }
 
-    @GetMapping("/{referralSourceType}")
-    public List<ReferralSourceDTO> findAllByReferralSourceType(@PathVariable String typeString) {
+    @GetMapping(params = "referralSourceType")
+    public List<ReferralSourceDTO> getAllByReferralSourceType(@RequestParam String typeString) {
         try {
             ReferralSourceType referralSourceType = ReferralSourceType.valueOf(typeString.toUpperCase());
             return this.referralSourceService.findAllBySourceType(referralSourceType);
