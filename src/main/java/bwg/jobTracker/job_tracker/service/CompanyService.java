@@ -1,7 +1,7 @@
 package bwg.jobTracker.job_tracker.service;
 
 import bwg.jobTracker.job_tracker.MapperUtil;
-import bwg.jobTracker.job_tracker.dto.CompanyCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.CompanyCreateRequest;
 import bwg.jobTracker.job_tracker.dto.CompanyDTO;
 import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.exception.CompanyNotFoundException;

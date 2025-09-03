@@ -1,7 +1,7 @@
 package bwg.jobTracker.job_tracker.service;
 
 import bwg.jobTracker.job_tracker.MapperUtil;
-import bwg.jobTracker.job_tracker.dto.InterviewCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.InterviewCreateRequest;
 import bwg.jobTracker.job_tracker.dto.InterviewDTO;
 import bwg.jobTracker.job_tracker.entity.Interview;
 import bwg.jobTracker.job_tracker.repository.InterviewRepository;

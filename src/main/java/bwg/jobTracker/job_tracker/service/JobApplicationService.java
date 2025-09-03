@@ -1,16 +1,14 @@
 package bwg.jobTracker.job_tracker.service;
 
 import bwg.jobTracker.job_tracker.MapperUtil;
-import bwg.jobTracker.job_tracker.dto.JobApplicationCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.JobApplicationCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationDTO;
 import bwg.jobTracker.job_tracker.entity.ApplicationStatus;
 import bwg.jobTracker.job_tracker.entity.JobApplication;
 import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
 import bwg.jobTracker.job_tracker.exception.JobApplicationNotFoundException;
 import bwg.jobTracker.job_tracker.repository.JobApplicationRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;

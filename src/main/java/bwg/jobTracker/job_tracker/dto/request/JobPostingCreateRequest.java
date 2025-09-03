@@ -1,4 +1,4 @@
-package bwg.jobTracker.job_tracker.dto;
+package bwg.jobTracker.job_tracker.dto.request;
 
 import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;

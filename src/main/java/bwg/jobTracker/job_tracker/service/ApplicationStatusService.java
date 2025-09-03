@@ -1,7 +1,7 @@
 package bwg.jobTracker.job_tracker.service;
 
 import bwg.jobTracker.job_tracker.MapperUtil;
-import bwg.jobTracker.job_tracker.dto.ApplicationStatusCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.ApplicationStatusCreateRequest;
 import bwg.jobTracker.job_tracker.dto.ApplicationStatusDTO;
 import bwg.jobTracker.job_tracker.entity.ApplicationStatus;
 import bwg.jobTracker.job_tracker.repository.ApplicationStatusRepository;

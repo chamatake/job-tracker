@@ -1,7 +1,7 @@
 package bwg.jobTracker.job_tracker.controller;
 
-import bwg.jobTracker.job_tracker.dto.ApplicationStatusUpdateRequest;
-import bwg.jobTracker.job_tracker.dto.JobApplicationCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.ApplicationStatusUpdateRequest;
+import bwg.jobTracker.job_tracker.dto.request.JobApplicationCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationDTO;
 import bwg.jobTracker.job_tracker.service.JobApplicationService;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package bwg.jobTracker.job_tracker.controller;
 
-import bwg.jobTracker.job_tracker.dto.InterviewCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.InterviewCreateRequest;
 import bwg.jobTracker.job_tracker.dto.InterviewDTO;
 import bwg.jobTracker.job_tracker.service.InterviewService;
 import org.springframework.http.HttpStatus;

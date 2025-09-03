@@ -1,4 +1,4 @@
-package bwg.jobTracker.job_tracker.dto;
+package bwg.jobTracker.job_tracker.dto.request;
 
 public class CompanyCreateRequest {
     private String name;

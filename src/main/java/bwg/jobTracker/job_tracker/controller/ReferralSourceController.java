@@ -1,6 +1,6 @@
 package bwg.jobTracker.job_tracker.controller;
 
-import bwg.jobTracker.job_tracker.dto.ReferralSourceCreateRequest;
+import bwg.jobTracker.job_tracker.dto.request.ReferralSourceCreateRequest;
 import bwg.jobTracker.job_tracker.dto.ReferralSourceDTO;
 import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
 import bwg.jobTracker.job_tracker.service.ReferralSourceService;
