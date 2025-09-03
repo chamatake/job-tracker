@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -44,6 +46,19 @@ public class JobApplication {
     @Column(name = "VERSION")
     private Long version;
 
+
+    public Set<ApplicationStatus> getApplicationStatuses() {
+        return Set.copyOf(this.applicationStatuses);
+    }
+
+    public ApplicationStatus getCurrentApplicationStatus() {
+        Optional<ApplicationStatus> current = Set.copyOf(this.applicationStatuses).stream()
+                .sorted(Comparator.comparing(ApplicationStatus::getActiveDate).reversed())
+                .findFirst();
+
+        return current.orElse(null);
+    }
+
     public void updateStatus(ApplicationStatus newStatus) {
         if (this.applicationStatuses.stream()
                 .map(ApplicationStatus::getApplicationStatusType)
@@ -55,9 +70,6 @@ public class JobApplication {
         }
     }
 
-    public Set<ApplicationStatus> getApplicationStatuses() {
-        return Set.copyOf(this.applicationStatuses);
-    }
 
     public static class Builder {
         private Long id;
