@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: "mysql"
+    image: "mysql:8.0.43"
     container_name: "local-mysql"
     ports:
       - "3306:3306"
@@ -10,3 +10,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
+    volumes:
+      - mysql-data:/etc/data/mysql
+
+volumes:
+  mysql-data:
