@@ -2,14 +2,13 @@ package bwg.jobTracker.job_tracker.entity;
 
 import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "referral_source")
 @NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class ReferralSource {

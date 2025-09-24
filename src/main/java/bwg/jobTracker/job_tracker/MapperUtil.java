@@ -65,7 +65,8 @@ public class MapperUtil {
             jobPosting.getSalaryRangeMax(),
             jobPosting.getOfficeSituation(),
             jobPosting.getRequiredTech(),
-            jobPosting.getPreferredTech(), toReferralSourceDTO(jobPosting.getReferralSource())
+            jobPosting.getPreferredTech(),
+            toReferralSourceDTO(jobPosting.getReferralSource())
         );
     }
 

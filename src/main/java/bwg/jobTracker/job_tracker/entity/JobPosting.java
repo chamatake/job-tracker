@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -46,11 +47,11 @@ public class JobPosting {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "required_tech")
-    private Set<Technology> requiredTech;
+    private Set<Technology> requiredTech = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "preferred_tech")
-    private Set<Technology> preferredTech;
+    private Set<Technology> preferredTech = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "referral_source_id")
