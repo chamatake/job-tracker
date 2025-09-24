@@ -19,8 +19,7 @@ public class ApplicationStatusService {
     }
 
     public ApplicationStatusDTO add(ApplicationStatusCreateRequest request) {
-        ApplicationStatus applicationStatus = new ApplicationStatus();
-        applicationStatus.setApplicationStatusType(request.getApplicationStatusType());
+        ApplicationStatus applicationStatus = new ApplicationStatus(request.getApplicationStatusType());
         applicationStatus.setActiveDate(request.getActiveDate() != null ?
                 request.getActiveDate() : LocalDate.now());
 

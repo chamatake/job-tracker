@@ -52,46 +52,29 @@ public class JobApplication {
     }
 
     /**
-     *  Helper method to update status in a controlled way such that old statuses always
-     *  have an inactiveDate set before a new status is assigned to the entity.
-     *
-     * @param newStatus must include the desired activeDate and statusType
-     */
-    public void updateStatus(ApplicationStatus newStatus) {
-        Objects.requireNonNull(newStatus.getActiveDate(), "activeDate required when using this update method.");
-        Objects.requireNonNull(newStatus.getApplicationStatusType(), "applicationStatusType required when updating JobApplication status");
-
-        if (this.applicationStatuses.stream()
-                .noneMatch(status -> status.getApplicationStatusType().equals(newStatus.getApplicationStatusType())
-                        && status.getInactiveDate() == null)
-        ) {
-            newStatus.setJobApplication(this);
-            this.applicationStatuses.add(newStatus);
-
-            currentStatus.setInactiveDate(LocalDate.now());
-            this.currentStatus = newStatus;
-        }
-    }
-
-    /**
-     * Overloaded
      * Helper method to assign a new status by passing in only the desired status type.
      * Sets inactiveDate on the old status and creates a new status to replace it.
      *
-     * @param newStatusType
+     * @param newStatusType the new status type
      */
     public void updateStatus(ApplicationStatusType newStatusType) {
-        if (this.applicationStatuses.stream()
-                .noneMatch(status -> status.getApplicationStatusType().equals(newStatusType)
-                        && status.getInactiveDate() == null)
-        ) {
-            ApplicationStatus updatedStatus = new ApplicationStatus(this, newStatusType);
-            updatedStatus.setActiveDate(LocalDate.now());
-            this.applicationStatuses.add(updatedStatus);
+        LocalDate now = LocalDate.now();
+        ApplicationStatus active = this.currentStatus;
 
-            this.currentStatus.setInactiveDate(LocalDate.now());
-            this.currentStatus = updatedStatus;
+        if (active != null && active.getApplicationStatusType() == newStatusType && active.getInactiveDate() == null) {
+            return; // no-op, the requested status change matches the current active status
         }
+
+        // close current active status if any active status exists
+        if (active != null && active.getInactiveDate() == null) {
+            active.setInactiveDate(now);
+        }
+
+        // create new status and attach it
+        ApplicationStatus next = new ApplicationStatus(this, newStatusType);
+        next.setActiveDate(now);
+        this.applicationStatuses.add(next);
+        this.currentStatus = next;
     }
 
 
