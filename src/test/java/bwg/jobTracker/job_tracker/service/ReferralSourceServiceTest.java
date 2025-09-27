@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,10 +36,9 @@ class ReferralSourceServiceTest {
     public void testAdd_happyPath() {
         ReferralSourceCreateRequest request = new ReferralSourceCreateRequest(
                 REF_NAME, ReferralSourceType.COMPANY_WEBSITE);
-        ReferralSource toBeAdded = new ReferralSource(REF_NAME, ReferralSourceType.COMPANY_WEBSITE);
         ReferralSource added = new ReferralSource(REF_ID, REF_NAME, ReferralSourceType.COMPANY_WEBSITE);
 
-        when(repository.save(toBeAdded)).thenReturn(added);
+        when(repository.save(any(ReferralSource.class))).thenReturn(added);
 
         ReferralSourceDTO actual = referralSourceService.add(request);
         assertEquals(request.getName(), actual.name());

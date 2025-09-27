@@ -1,16 +1,12 @@
 package bwg.jobTracker.job_tracker.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "company")
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class Company {
