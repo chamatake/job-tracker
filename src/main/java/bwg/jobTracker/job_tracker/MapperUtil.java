@@ -7,11 +7,10 @@ import java.util.stream.Collectors;
 
 public class MapperUtil {
 
-    @Deprecated(forRemoval = true) // causing stackoverflow
     public static ApplicationStatusDTO toApplicationStatusDTO(ApplicationStatus status) {
         return new ApplicationStatusDTO(
                 status.getId(),
-                toJobApplicationDTO(status.getJobApplication()),
+                status.getJobApplicationId(),
                 status.getApplicationStatusType(),
                 status.getActiveDate()
         );

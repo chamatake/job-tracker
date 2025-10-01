@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,12 +44,12 @@ class JobApplicationServiceTest extends BaseTest {
         JobApplicationCreateRequest request = new JobApplicationCreateRequest(
                 requestPosting, RESUME_FILENAME, COVER_LETTER_FILENAME);
         JobApplication added = new JobApplication();
+        added.setId(4445L);
 
-        ApplicationStatus currentStatus = TestDataUtil.makeApplicationStatus(ApplicationStatusType.INTERVIEWING, added, null);
-        Set<ApplicationStatus> statuses = TestDataUtil.makeApplicationStatusSet(added, 3);
+        ApplicationStatus currentStatus = TestDataUtil.makeApplicationStatus(ApplicationStatusType.INTERVIEWING, added.getId(), null);
+        Set<ApplicationStatus> statuses = TestDataUtil.makeApplicationStatusSet(added.getId(), 3);
         statuses.add(currentStatus);
 
-        added.setId(4445L);
         added.setJobPosting(requestPosting);
         added.setApplicationStatuses(statuses);
         added.setCurrentStatusType(currentStatus.getApplicationStatusType());

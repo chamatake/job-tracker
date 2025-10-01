@@ -60,7 +60,7 @@ public class JobApplicationService {
                 .orElseThrow(() -> new JobApplicationNotFoundException("No job application exists for id = " + jobApplicationId));
 
         ApplicationStatus updatedStatus = new ApplicationStatus(statusType);
-        updatedStatus.setJobApplication(existing);
+        updatedStatus.setJobApplicationId(existing.getId());
         updatedStatus.setActiveDate(LocalDate.now());
         existing.updateStatus(updatedStatus);
 

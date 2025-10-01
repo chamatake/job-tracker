@@ -14,17 +14,17 @@ import java.util.Set;
 public class TestDataUtil {
     private static final LocalDate START_DATE = LocalDate.parse("2025-03-14");
 
-    public static ApplicationStatus makeApplicationStatus(ApplicationStatusType type, JobApplication parent, @Nullable LocalDate activeDate) {
+    public static ApplicationStatus makeApplicationStatus(ApplicationStatusType type, Long parentId, @Nullable LocalDate activeDate) {
         ApplicationStatus status = new ApplicationStatus();
         status.setId(112233L);
-        status.setJobApplication(parent);
+        status.setJobApplicationId(parentId);
         status.setApplicationStatusType(type);
         status.setActiveDate(Objects.isNull(activeDate) ? LocalDate.now() : activeDate);
 
         return status;
     }
 
-    public static Set<ApplicationStatus> makeApplicationStatusSet(JobApplication parent, int count) {
+    public static Set<ApplicationStatus> makeApplicationStatusSet(Long parentId, int count) {
         Set<ApplicationStatus> statuses = new HashSet<>();
         Random randomInts = new Random();
         ApplicationStatusType[] enumTypes = ApplicationStatusType.values();
@@ -32,7 +32,7 @@ public class TestDataUtil {
         for (int i = 0; i <= count; i++) {
             ApplicationStatus singleStatus = new ApplicationStatus();
             singleStatus.setId(11011L + i);
-            singleStatus.setJobApplication(parent);
+            singleStatus.setJobApplicationId(parentId);
             singleStatus.setActiveDate(START_DATE.plusDays(1 + i));
             singleStatus.setApplicationStatusType(enumTypes[randomInts.nextInt(enumTypes.length)]);
             statuses.add(singleStatus);

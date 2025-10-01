@@ -26,7 +26,7 @@ public class JobApplication {
     @JoinColumn(name = "job_posting_id", unique = true)
     private JobPosting jobPosting;
 
-    @OneToMany(mappedBy = "jobApplication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "jobApplicationId", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
 
     @Column(name = "current_status_type")
@@ -65,7 +65,7 @@ public class JobApplication {
                 .noneMatch(type -> type.equals(newStatus.getApplicationStatusType()))
         ) {
             this.applicationStatuses.add(newStatus);
-            newStatus.setJobApplication(this);
+            newStatus.setJobApplicationId(this.id);
             this.currentStatusType = newStatus.getApplicationStatusType();
         }
     }
@@ -98,11 +98,6 @@ public class JobApplication {
             this.applicationStatuses = Set.copyOf(statuses);
             return this;
         }
-
-/*        public Builder withCurrentStatus(ApplicationStatus status) {
-            this.currentStatus = status;
-            return this;
-        }*/
 
         public Builder withCurrentStatusType(ApplicationStatusType statusType) {
             this.currentStatusType = statusType;
