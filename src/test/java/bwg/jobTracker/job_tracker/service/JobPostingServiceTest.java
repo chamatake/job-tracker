@@ -1,12 +1,16 @@
 package bwg.jobTracker.job_tracker.service;
 
+import bwg.jobTracker.job_tracker.BaseTest;
 import bwg.jobTracker.job_tracker.MapperUtil;
 import bwg.jobTracker.job_tracker.TestDataUtil;
 import bwg.jobTracker.job_tracker.dto.JobPostingDTO;
 import bwg.jobTracker.job_tracker.dto.request.JobPostingCreateRequest;
 import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.entity.JobPosting;
+import bwg.jobTracker.job_tracker.entity.ReferralSource;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
+import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
+import bwg.jobTracker.job_tracker.enums.Technology;
 import bwg.jobTracker.job_tracker.exception.JobPostingNotFoundException;
 import bwg.jobTracker.job_tracker.repository.JobPostingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -26,11 +30,13 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class JobPostingServiceTest {
+class JobPostingServiceTest extends BaseTest {
 
     @Mock
     private JobPostingRepository repository;
     private JobPostingService jobPostingService;
+
+
 
     @BeforeEach
     void setup() {
@@ -39,11 +45,27 @@ class JobPostingServiceTest {
 
     @Test
     public void testAdd_happyPath() {
-        JobPostingCreateRequest request = TestDataUtil.makeJobPostingRequestWithTech(OfficeSituation.HYBRID, 7, 3);
-        JobPosting added = TestDataUtil.makeJobPostingWithTech(OfficeSituation.HYBRID, 7, 3);
-        added.setId(new Random().nextLong(1000000));
-        added.setRequiredTech(request.getRequiredTech());
-        added.setPreferredTech(request.getPreferredTech());
+        Company requestCompany = new Company(COMPANY_NAME);
+        ReferralSource requestSource = new ReferralSource("Tony Stark", ReferralSourceType.INTERNAL);
+        Set<Technology> preferredTech = TestDataUtil.makeTechSet(3);
+        Set<Technology> requiredTech = TestDataUtil.makeTechSet(5);
+
+        JobPostingCreateRequest request = new JobPostingCreateRequest();
+        request.setCompany(requestCompany);
+        request.setTitle(POSTING_TITLE);
+        request.setRequisitionId(REQUISITION_ID);
+        request.setUrl(POSTING_URL);
+        request.setSalaryRangeMin(SALARY_MIN);
+        request.setSalaryRangeMax(SALARY_MAX);
+        request.setOfficeSituation(OfficeSituation.HYBRID);
+        request.setReferralSource(requestSource);
+        request.setPreferredTech(preferredTech);
+        request.setRequiredTech(requiredTech);
+
+        JobPosting added = makeJobPostingDummy(requestCompany, requestSource, OfficeSituation.HYBRID);
+        added.setId(88888L);
+        added.setPreferredTech(preferredTech);
+        added.setRequiredTech(requiredTech);
 
         when(repository.save(any(JobPosting.class))).thenReturn(added);
 
@@ -64,9 +86,12 @@ class JobPostingServiceTest {
 
     @Test
     public void testFindAll_happyPath() {
-        JobPosting postingHybrid = TestDataUtil.makeJobPostingNoTech(OfficeSituation.HYBRID);
+        JobPosting postingHybrid = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_BORING, ReferralSourceType.APP), OfficeSituation.HYBRID);
         postingHybrid.setId(12345L);
-        JobPosting postingRemote = TestDataUtil.makeJobPostingNoTech(OfficeSituation.REMOTE);
+        JobPosting postingRemote = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_GANDALF, ReferralSourceType.INTERNAL), OfficeSituation.REMOTE);
+
         List<JobPosting> existing = List.of(postingRemote, postingHybrid);
 
         when(repository.findAll()).thenReturn(existing);
@@ -80,13 +105,15 @@ class JobPostingServiceTest {
 
     @Test
     public void testFindAllByCompany_happyPath() {
-        final Company searchCompany = new Company("junky junk");
-        JobPosting postingHybrid = TestDataUtil.makeJobPostingNoTech(OfficeSituation.HYBRID);
+        final Company searchCompany = new Company(COMPANY_NAME_JUNK);
+        JobPosting postingHybrid = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_BORING, ReferralSourceType.APP), OfficeSituation.HYBRID);
         postingHybrid.setId(12345L);
         postingHybrid.setCompany(searchCompany);
-        JobPosting postingRemote2 = TestDataUtil.makeJobPostingNoTech(OfficeSituation.REMOTE);
-        postingRemote2.setCompany(searchCompany);
-        List<JobPosting> existing = List.of(postingRemote2, postingHybrid);
+        JobPosting postingRemote = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_GANDALF, ReferralSourceType.INTERNAL), OfficeSituation.REMOTE);
+        postingRemote.setCompany(searchCompany);
+        List<JobPosting> existing = List.of(postingRemote, postingHybrid);
 
         when(repository.findAllByCompany(any(Company.class))).thenReturn(existing);
 
@@ -94,18 +121,20 @@ class JobPostingServiceTest {
 
         assertEquals(existing.size(), actual.size());
         assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingHybrid)));
-        assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingRemote2)));
+        assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingRemote)));
     }
 
     @Test
     public void testFindAllByCompanyName_happyPath() {
         final String searchName = "junky junk";
-        JobPosting postingHybrid = TestDataUtil.makeJobPostingNoTech(OfficeSituation.HYBRID);
+        JobPosting postingHybrid = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_BORING, ReferralSourceType.APP), OfficeSituation.HYBRID);
         postingHybrid.setId(12345L);
         postingHybrid.getCompany().setCompanyName(searchName);
-        JobPosting postingRemote2 = TestDataUtil.makeJobPostingNoTech(OfficeSituation.REMOTE);
-        postingRemote2.getCompany().setCompanyName(searchName);
-        List<JobPosting> existing = List.of(postingRemote2, postingHybrid);
+        JobPosting postingRemote = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_GANDALF, ReferralSourceType.INTERNAL), OfficeSituation.REMOTE);
+        postingRemote.getCompany().setCompanyName(searchName);
+        List<JobPosting> existing = List.of(postingRemote, postingHybrid);
 
         when(repository.findAllByCompany_companyName(searchName)).thenReturn(existing);
 
@@ -113,7 +142,7 @@ class JobPostingServiceTest {
 
         assertEquals(existing.size(), actual.size());
         assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingHybrid)));
-        assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingRemote2)));
+        assertTrue(actual.contains(MapperUtil.toJobPostingDTO(postingRemote)));
     }
 
     @Test
@@ -125,7 +154,8 @@ class JobPostingServiceTest {
 
     @Test
     public void testFindById_happyPath() {
-        JobPosting existing = TestDataUtil.makeJobPostingNoTech(OfficeSituation.ONSITE);
+        JobPosting existing = makeJobPostingDummy(
+                new Company(), new ReferralSource(REFERRAL_NAME_BORING, ReferralSourceType.APP), OfficeSituation.ONSITE);
         Long existingId = existing.getId();
 
         when(repository.findById(existingId)).thenReturn(Optional.of(existing));
