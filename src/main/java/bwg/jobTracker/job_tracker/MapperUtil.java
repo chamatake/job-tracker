@@ -3,16 +3,15 @@ package bwg.jobTracker.job_tracker;
 import bwg.jobTracker.job_tracker.dto.*;
 import bwg.jobTracker.job_tracker.entity.*;
 
-import java.util.stream.Collectors;
-
 public class MapperUtil {
 
     public static ApplicationStatusDTO toApplicationStatusDTO(ApplicationStatus status) {
         return new ApplicationStatusDTO(
                 status.getId(),
-                toJobApplicationDTO(status.getJobApplication()),
+                status.getJobApplication().getId(),
                 status.getApplicationStatusType(),
-                status.getActiveDate()
+                status.getActiveDate(),
+                status.getInactiveDate()
         );
     }
 
@@ -46,8 +45,8 @@ public class MapperUtil {
                 toJobPostingDTO(application.getJobPosting()),
                 application.getApplicationStatuses().stream()
                         .map(MapperUtil::toApplicationStatusDTO)
-                        .collect(Collectors.toSet()),
-                application.getCurrentStatusType(),
+                        .toList(),
+                application.getCurrentStatus().getId(),
                 application.getAppliedDate(),
                 application.getResumeFilename(),
                 application.getCoverLetterFilename()

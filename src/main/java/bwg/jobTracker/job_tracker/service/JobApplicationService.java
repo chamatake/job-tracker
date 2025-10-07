@@ -9,10 +9,10 @@ import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
 import bwg.jobTracker.job_tracker.exception.JobApplicationNotFoundException;
 import bwg.jobTracker.job_tracker.repository.JobApplicationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class JobApplicationService {
@@ -31,12 +31,15 @@ public class JobApplicationService {
 
         JobApplication application = new JobApplication.Builder()
                 .withJobPosting(request.getJobPosting())
-                .withApplicationStatuses(Set.of(initialStatus))
-                .withCurrentStatusType(initialStatus.getApplicationStatusType())
                 .withAppliedDate(now)
                 .withResumeFilename(request.getResumeFilename())
                 .withCoverLetterFileName(request.getCoverLetterFilename())
                 .build();
+
+        initialStatus.setJobApplication(application);
+        application.setApplicationStatuses(List.of(initialStatus));
+        application.setCurrentStatus(initialStatus);
+
         JobApplication added = this.jobApplicationRepository.save(application);
 
         return MapperUtil.toJobApplicationDTO(added);
@@ -55,15 +58,12 @@ public class JobApplicationService {
         return MapperUtil.toJobApplicationDTO(existing);
     }
 
+    @Transactional
     public JobApplicationDTO updateStatusById(Long jobApplicationId, ApplicationStatusType statusType) {
         JobApplication existing = this.jobApplicationRepository.findById(jobApplicationId)
                 .orElseThrow(() -> new JobApplicationNotFoundException("No job application exists for id = " + jobApplicationId));
 
-        ApplicationStatus updatedStatus = new ApplicationStatus(statusType);
-        updatedStatus.setJobApplication(existing);
-        updatedStatus.setActiveDate(LocalDate.now());
-        existing.updateStatus(updatedStatus);
-
+        existing.updateStatus(statusType);
         return MapperUtil.toJobApplicationDTO(this.jobApplicationRepository.save(existing));
 
     }

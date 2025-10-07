@@ -19,6 +19,7 @@ public class ApplicationStatus {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_application_id")
+    @ToString.Exclude
     @NonNull private JobApplication jobApplication;
 
     @Enumerated(value = EnumType.STRING)
@@ -27,6 +28,9 @@ public class ApplicationStatus {
 
     @Column(name = "active_date")
     private LocalDate activeDate;
+
+    @Column(name = "inactive_date")
+    private LocalDate inactiveDate;
 
 
     @Version

@@ -1,15 +1,13 @@
 package bwg.jobTracker.job_tracker.dto;
 
-import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
-
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 public record JobApplicationDTO(
         Long id,
         JobPostingDTO jobPosting,
-        Set<ApplicationStatusDTO> applicationStatuses,
-        ApplicationStatusType currentStatusType,
+        List<ApplicationStatusDTO> applicationStatuses,
+        Long currentStatusId,
         LocalDate appliedDate,
         String resumeFilename,
         String coverLetterFilename
