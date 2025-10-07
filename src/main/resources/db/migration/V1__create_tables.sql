@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS job_posting (
 CREATE TABLE IF NOT EXISTS job_application (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	job_posting_id BIGINT,
-	current_status_type VARCHAR(100),
+	current_status_id BIGINT,
 	applied_date DATE,
 	resume_filename VARCHAR(1000),
 	cover_letter_filename VARCHAR(1000),
@@ -48,9 +48,7 @@ CREATE TABLE IF NOT EXISTS job_application (
 
 	CONSTRAINT PK_JobApplication PRIMARY KEY (id),
 	CONSTRAINT FK_JobApplication_JobPostingId FOREIGN KEY (job_posting_id)
-		REFERENCES job_posting(id) ON UPDATE CASCADE,
-	CONSTRAINT CK_JobApplication_CurrentStatusType_enum
-		CHECK (current_status_type IN ('APPLIED', 'REJECTED', 'SCREENING', 'CODE_ASSESSMENT', 'INTERVIEWING'))
+		REFERENCES job_posting(id) ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS application_status (
@@ -58,6 +56,7 @@ CREATE TABLE IF NOT EXISTS application_status (
 	job_application_id BIGINT NOT NULL,
 	application_status_type VARCHAR(100) NOT NULL,
 	active_date DATE,
+	inactive_date DATE,
 	`VERSION` BIGINT,
 
 	CONSTRAINT PK_ApplicationStatus PRIMARY KEY (id),
@@ -66,6 +65,10 @@ CREATE TABLE IF NOT EXISTS application_status (
 	CONSTRAINT CK_ApplicationStatus_ApplicationStatusType_enum
 		CHECK (application_status_type IN ('APPLIED', 'REJECTED', 'SCREENING', 'CODE_ASSESSMENT', 'INTERVIEWING'))
 );
+
+ALTER TABLE job_application
+    ADD CONSTRAINT FK_JobApplication_CurrentStatusId FOREIGN KEY (current_status_id)
+        REFERENCES application_status(id) ON UPDATE CASCADE;
 
 CREATE TABLE IF NOT EXISTS interview (
 	id BIGINT NOT NULL AUTO_INCREMENT,

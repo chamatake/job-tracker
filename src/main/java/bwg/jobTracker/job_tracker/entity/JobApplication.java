@@ -5,12 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "job_application")
@@ -26,11 +24,13 @@ public class JobApplication {
     @JoinColumn(name = "job_posting_id", unique = true)
     private JobPosting jobPosting;
 
-    @OneToMany(mappedBy = "jobApplication", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
+    @OneToMany(mappedBy = "jobApplication", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ToString.Exclude
+    private List<ApplicationStatus> applicationStatuses = new ArrayList<>();
 
-    @Column(name = "current_status_type")
-    private ApplicationStatusType currentStatusType;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "current_status_id")
+    private ApplicationStatus currentStatus;
 
     @Column(name = "applied_date")
     private LocalDate appliedDate;
@@ -47,26 +47,50 @@ public class JobApplication {
     private Long version;
 
 
-    public Set<ApplicationStatus> getApplicationStatuses() {
-        return Set.copyOf(this.applicationStatuses);
+    public List<ApplicationStatus> getApplicationStatuses() {
+        return List.copyOf(this.applicationStatuses);
     }
 
-    public ApplicationStatus getCurrentApplicationStatus() {
-        Optional<ApplicationStatus> current = Set.copyOf(this.applicationStatuses).stream()
-                .sorted(Comparator.comparing(ApplicationStatus::getActiveDate).reversed())
-                .findFirst();
-
-        return current.orElse(null);
-    }
-
+    /**
+     *  Helper method to update status in a controlled way such that old statuses always
+     *  have an inactiveDate set before a new status is assigned to the entity.
+     *
+     * @param newStatus must include the desired activeDate and statusType
+     */
     public void updateStatus(ApplicationStatus newStatus) {
+        Objects.requireNonNull(newStatus.getActiveDate(), "activeDate required when using this update method.");
+        Objects.requireNonNull(newStatus.getApplicationStatusType(), "applicationStatusType required when updating JobApplication status");
+
         if (this.applicationStatuses.stream()
-                .map(ApplicationStatus::getApplicationStatusType)
-                .noneMatch(type -> type.equals(newStatus.getApplicationStatusType()))
+                .noneMatch(status -> status.getApplicationStatusType().equals(newStatus.getApplicationStatusType())
+                        && status.getInactiveDate() == null)
         ) {
-            this.applicationStatuses.add(newStatus);
             newStatus.setJobApplication(this);
-            this.currentStatusType = newStatus.getApplicationStatusType();
+            this.applicationStatuses.add(newStatus);
+
+            currentStatus.setInactiveDate(LocalDate.now());
+            this.currentStatus = newStatus;
+        }
+    }
+
+    /**
+     * Overloaded
+     * Helper method to assign a new status by passing in only the desired status type.
+     * Sets inactiveDate on the old status and creates a new status to replace it.
+     *
+     * @param newStatusType
+     */
+    public void updateStatus(ApplicationStatusType newStatusType) {
+        if (this.applicationStatuses.stream()
+                .noneMatch(status -> status.getApplicationStatusType().equals(newStatusType)
+                        && status.getInactiveDate() == null)
+        ) {
+            ApplicationStatus updatedStatus = new ApplicationStatus(this, newStatusType);
+            updatedStatus.setActiveDate(LocalDate.now());
+            this.applicationStatuses.add(updatedStatus);
+
+            this.currentStatus.setInactiveDate(LocalDate.now());
+            this.currentStatus = updatedStatus;
         }
     }
 
@@ -74,8 +98,8 @@ public class JobApplication {
     public static class Builder {
         private Long id;
         private JobPosting jobPosting;
-        private Set<ApplicationStatus> applicationStatuses = new HashSet<>();
-        private ApplicationStatusType currentStatusType;
+        private List<ApplicationStatus> applicationStatuses = new ArrayList<>();
+        private ApplicationStatus currentStatus;
         private LocalDate appliedDate;
         private String resumeFilename;
         private String coverLetterFilename;
@@ -94,18 +118,13 @@ public class JobApplication {
             return this;
         }
 
-        public Builder withApplicationStatuses(Set<ApplicationStatus> statuses) {
-            this.applicationStatuses = Set.copyOf(statuses);
+        public Builder withApplicationStatuses(List<ApplicationStatus> statuses) {
+            this.applicationStatuses = List.copyOf(statuses);
             return this;
         }
 
-/*        public Builder withCurrentStatus(ApplicationStatus status) {
+        public Builder withCurrentStatus(ApplicationStatus status) {
             this.currentStatus = status;
-            return this;
-        }*/
-
-        public Builder withCurrentStatusType(ApplicationStatusType statusType) {
-            this.currentStatusType = statusType;
             return this;
         }
 
@@ -128,8 +147,8 @@ public class JobApplication {
             JobApplication application = new JobApplication();
             application.setId(this.id);
             application.setJobPosting(this.jobPosting);
-            application.setApplicationStatuses(Set.copyOf(this.applicationStatuses));
-            application.setCurrentStatusType(this.currentStatusType);
+            application.setApplicationStatuses(List.copyOf(this.applicationStatuses));
+            application.setCurrentStatus(this.currentStatus);
             application.setAppliedDate(this.appliedDate);
             application.setResumeFilename(this.resumeFilename);
             application.setCoverLetterFilename(this.coverLetterFilename);

@@ -6,7 +6,8 @@ import java.time.LocalDate;
 
 public record ApplicationStatusDTO(
         Long id,
-        JobApplicationDTO jobApplication,
+        Long jobApplicationId,
         ApplicationStatusType applicationStatusType,
-        LocalDate activeDate
+        LocalDate activeDate,
+        LocalDate inactiveDate
 ) {}
