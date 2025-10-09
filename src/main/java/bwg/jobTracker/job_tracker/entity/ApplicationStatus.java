@@ -40,4 +40,11 @@ public class ApplicationStatus {
     public ApplicationStatus(ApplicationStatusType applicationStatusType) {
         this.applicationStatusType = applicationStatusType;
     }
+
+    public ApplicationStatus(Long id, JobApplication parent, ApplicationStatusType statusType, LocalDate activeDate) {
+        this.id = id;
+        this.jobApplication = parent;
+        this.applicationStatusType = statusType;
+        this.activeDate = activeDate;
+    }
 }

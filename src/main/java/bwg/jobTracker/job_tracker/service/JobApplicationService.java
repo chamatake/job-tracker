@@ -3,6 +3,7 @@ package bwg.jobTracker.job_tracker.service;
 import bwg.jobTracker.job_tracker.MapperUtil;
 import bwg.jobTracker.job_tracker.dto.request.JobApplicationCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationDTO;
+import bwg.jobTracker.job_tracker.dto.request.JobApplicationUpdateStatusRequest;
 import bwg.jobTracker.job_tracker.entity.ApplicationStatus;
 import bwg.jobTracker.job_tracker.entity.JobApplication;
 import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
@@ -59,12 +60,13 @@ public class JobApplicationService {
     }
 
     @Transactional
-    public JobApplicationDTO updateStatusById(Long jobApplicationId, ApplicationStatusType statusType) {
-        JobApplication existing = this.jobApplicationRepository.findById(jobApplicationId)
-                .orElseThrow(() -> new JobApplicationNotFoundException("No job application exists for id = " + jobApplicationId));
+    public JobApplicationDTO updateStatusById(JobApplicationUpdateStatusRequest request) {
+        JobApplication existing = this.jobApplicationRepository.findById(request.getJobApplicationId())
+                .orElseThrow(() -> new JobApplicationNotFoundException("No job application exists for id = " + request.getJobApplicationId()));
 
-        existing.updateStatus(statusType);
-        return MapperUtil.toJobApplicationDTO(this.jobApplicationRepository.save(existing));
+        existing.updateStatus(request.getStatusType());
+        JobApplication updated = this.jobApplicationRepository.save(existing);
 
+        return MapperUtil.toJobApplicationDTO(updated);
     }
 }

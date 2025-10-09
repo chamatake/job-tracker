@@ -2,16 +2,14 @@ package bwg.jobTracker.job_tracker.entity;
 
 import bwg.jobTracker.job_tracker.enums.InterviewType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "interview")
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class Interview {

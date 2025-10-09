@@ -1,13 +1,11 @@
 package bwg.jobTracker.job_tracker.dto.request;
 
+import lombok.*;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class CompanyCreateRequest {
-    private String name;
-
-    public CompanyCreateRequest(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
+    @NonNull private String name;
 }

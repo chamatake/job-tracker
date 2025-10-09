@@ -3,6 +3,8 @@ package bwg.jobTracker.job_tracker;
 import bwg.jobTracker.job_tracker.dto.*;
 import bwg.jobTracker.job_tracker.entity.*;
 
+import java.util.Objects;
+
 public class MapperUtil {
 
     public static ApplicationStatusDTO toApplicationStatusDTO(ApplicationStatus status) {
@@ -15,13 +17,6 @@ public class MapperUtil {
         );
     }
 
-    public static Company toCompany(CompanyDTO dto) {
-        Company company = new Company();
-        company.setId(dto.id());
-        company.setCompanyName(dto.name());
-        return company;
-    }
-
     public static CompanyDTO toCompanyDTO(Company company) {
         return new CompanyDTO(
                 company.getId(),
@@ -30,6 +25,9 @@ public class MapperUtil {
     }
 
     public static InterviewDTO toInterviewDTO(Interview interview) {
+        Objects.requireNonNull(interview.getJobApplication().getCurrentStatus(),
+                "Interview.jobApplication must have a non-null currentStatus before converting to DTO");
+
         return new InterviewDTO(
                 interview.getId(),
                 toJobApplicationDTO(interview.getJobApplication()),
@@ -40,6 +38,9 @@ public class MapperUtil {
     }
 
     public static JobApplicationDTO toJobApplicationDTO(JobApplication application) {
+        Objects.requireNonNull(application.getCurrentStatus(),
+                "JobApplication must have a non-null currentStatus before converting to DTO");
+
         return new JobApplicationDTO(
                 application.getId(),
                 toJobPostingDTO(application.getJobPosting()),
@@ -64,7 +65,8 @@ public class MapperUtil {
             jobPosting.getSalaryRangeMax(),
             jobPosting.getOfficeSituation(),
             jobPosting.getRequiredTech(),
-            jobPosting.getPreferredTech(), toReferralSourceDTO(jobPosting.getReferralSource())
+            jobPosting.getPreferredTech(),
+            toReferralSourceDTO(jobPosting.getReferralSource())
         );
     }
 

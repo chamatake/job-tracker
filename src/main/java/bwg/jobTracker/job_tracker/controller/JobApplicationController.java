@@ -3,6 +3,7 @@ package bwg.jobTracker.job_tracker.controller;
 import bwg.jobTracker.job_tracker.dto.request.ApplicationStatusUpdateRequest;
 import bwg.jobTracker.job_tracker.dto.request.JobApplicationCreateRequest;
 import bwg.jobTracker.job_tracker.dto.JobApplicationDTO;
+import bwg.jobTracker.job_tracker.dto.request.JobApplicationUpdateStatusRequest;
 import bwg.jobTracker.job_tracker.service.JobApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class JobApplicationController {
 
     @PatchMapping("/{id}/status")
     public JobApplicationDTO updateStatusTypeById(@PathVariable Long id, @RequestBody ApplicationStatusUpdateRequest request) {
-        return this.jobApplicationService.updateStatusById(id, request.getApplicationStatusType());
+        return this.jobApplicationService.updateStatusById(
+                new JobApplicationUpdateStatusRequest(id, request.getApplicationStatusType()));
     }
 }
