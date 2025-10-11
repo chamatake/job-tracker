@@ -4,6 +4,7 @@ import bwg.jobTracker.job_tracker.MapperUtil;
 import bwg.jobTracker.job_tracker.dto.request.ApplicationStatusCreateRequest;
 import bwg.jobTracker.job_tracker.dto.ApplicationStatusDTO;
 import bwg.jobTracker.job_tracker.entity.ApplicationStatus;
+import bwg.jobTracker.job_tracker.enums.ApplicationStatusType;
 import bwg.jobTracker.job_tracker.repository.ApplicationStatusRepository;
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,17 @@ public class ApplicationStatusService {
                 .toList();
     }
 
+    public List<ApplicationStatusDTO> findAllByStatus(String statusTypeString) {
+        ApplicationStatusType type;
+        try {
+            type = ApplicationStatusType.valueOf(statusTypeString.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            type = ApplicationStatusType.UNKNOWN;
+            // log warning?
+        }
+
+        return this.applicationStatusRepository.findAllByApplicationStatusType(type.toString()).stream()
+                .map(MapperUtil::toApplicationStatusDTO)
+                .toList();
+    }
 }
