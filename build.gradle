@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    springVersion = '3.5.5'
+    springVersion = '3.5.6'
     lombokVersion = '1.18.38'
     flywayVersion = '11.13.1'
 }
@@ -30,9 +30,15 @@ dependencies {
 
     implementation "com.mysql:mysql-connector-j:9.4.0"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13"
+    constraints {
+        implementation ("org.apache.commons:commons-lang3:3.18.0") {
+            because("CVE-2025-48924: vulnerability in v3.0-v3.17.x")
+        }
+    }
     implementation "org.flywaydb:flyway-core:$flywayVersion"
     implementation "org.flywaydb:flyway-mysql:$flywayVersion"
     implementation "org.projectlombok:lombok:$lombokVersion"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:$springVersion"
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-jdbc"
     implementation "org.springframework.boot:spring-boot-starter-web"
