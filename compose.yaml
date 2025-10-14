@@ -1,17 +1,35 @@
 services:
-  mysql:
+  db:
     image: "mysql:8.0.43"
-    container_name: "local-mysql"
-    ports:
-      - "3306:3306"
+    container_name: "jobtracker-db"
     env_file: .env
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 15s
+      timeout: 30s
+      retries: 50
     volumes:
-      - mysql-data:/etc/data/mysql
+      - mysql-data:/etc/data/jobtracker
 
+  app:
+    image: job-tracker:latest
+    container_name: jobtracker-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+    ports:
+      - "8088:8088"
 volumes:
   mysql-data:
