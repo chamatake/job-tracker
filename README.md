@@ -28,3 +28,6 @@ run `docker-compose up` in a terminal.
 
 ## TROUBLESHOOTING
     // TODO populate this section as needed
+    *   it's a good idea to remove old docker volumes if you change basic database schema things (ex. in the initial
+        script to create the databases). Do this by running `docker volume ls` to list all volumes. Then to remove
+        a volume, run `docker volume rm {name-of-volume-no-curlies}`

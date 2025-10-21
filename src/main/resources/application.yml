@@ -13,6 +13,7 @@ spring:
 flyway:
   enabled: true
   locations: classpath:/db/migration
+  validateMigrationNaming: true
 server:
   port: "8088"
 springdoc:
