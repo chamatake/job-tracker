@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/app-status")
+@RequestMapping("/api/application-statuses")
 public class ApplicationStatusController {
     private final ApplicationStatusService applicationStatusService;
 
@@ -24,13 +24,13 @@ public class ApplicationStatusController {
     }
 
     @GetMapping("/job-application/{id}")
-    public List<ApplicationStatusDTO> getAllByJobApplicationId(@RequestParam Long applicationId) {
+    public List<ApplicationStatusDTO> getAllByJobApplicationId(@PathVariable Long applicationId) {
         return this.applicationStatusService.findAllByJobApplicationId(applicationId);
     }
 
-    @GetMapping
-    public List<ApplicationStatusDTO> getAllByStatusType(@PathVariable String status) {
-        return this.applicationStatusService.findAllByStatus(status);
+    @GetMapping(path = "/status-type", params = "statusType")
+    public List<ApplicationStatusDTO> getAllByStatusType(@RequestParam String statusType) {
+        return this.applicationStatusService.findAllByStatusType(statusType);
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ApplicationStatusService {
@@ -34,7 +35,7 @@ public class ApplicationStatusService {
                 .toList();
     }
 
-    public List<ApplicationStatusDTO> findAllByStatus(String statusTypeString) {
+    public List<ApplicationStatusDTO> findAllByStatusType(String statusTypeString) {
         ApplicationStatusType type;
         try {
             type = ApplicationStatusType.valueOf(statusTypeString.toUpperCase());
@@ -43,8 +44,10 @@ public class ApplicationStatusService {
             // log warning?
         }
 
-        return this.applicationStatusRepository.findAllByApplicationStatusType(type.toString()).stream()
-                .map(MapperUtil::toApplicationStatusDTO)
-                .toList();
+        return this.applicationStatusRepository.findAllByApplicationStatusType(
+                type.toString().toUpperCase(Locale.ROOT))
+                    .stream()
+                    .map(MapperUtil::toApplicationStatusDTO)
+                    .toList();
     }
 }

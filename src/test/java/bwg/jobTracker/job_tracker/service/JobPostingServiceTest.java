@@ -75,7 +75,7 @@ class JobPostingServiceTest extends BaseTest {
         assertEquals(MapperUtil.toCompanyDTO(request.getCompany()), actual.company());
         assertEquals(request.getTitle(), actual.title());
         assertEquals(request.getRequisitionId(), actual.requisitionId());
-        assertEquals(request.getUrl(), actual.url());
+        assertEquals(request.getUrl(), actual.postingUrl());
         assertEquals(request.getSalaryRangeMin(), actual.salaryRangeMin());
         assertEquals(request.getSalaryRangeMax(), actual.salaryRangeMax());
         assertEquals(request.getOfficeSituation(), actual.officeSituation());
@@ -166,7 +166,7 @@ class JobPostingServiceTest extends BaseTest {
         assertEquals(MapperUtil.toCompanyDTO(existing.getCompany()), actual.company());
         assertEquals(existing.getTitle(), actual.title());
         assertEquals(existing.getRequisitionId(), actual.requisitionId());
-        assertEquals(existing.getPostingUrl(), actual.url());
+        assertEquals(existing.getPostingUrl(), actual.postingUrl());
         assertEquals(existing.getSalaryRangeMin(), actual.salaryRangeMin());
         assertEquals(existing.getSalaryRangeMax(), actual.salaryRangeMax());
         assertEquals(existing.getOfficeSituation(), actual.officeSituation());

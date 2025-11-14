@@ -17,7 +17,7 @@ public class ApplicationStatus {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "job_application_id")
     @ToString.Exclude
     @NonNull private JobApplication jobApplication;

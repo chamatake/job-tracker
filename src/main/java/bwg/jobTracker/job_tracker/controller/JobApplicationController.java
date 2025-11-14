@@ -26,14 +26,14 @@ public class JobApplicationController {
 
     }
 
-    @GetMapping("/{id}")
-    public JobApplicationDTO getById(@PathVariable Long id) {
-        return this.jobApplicationService.findById(id);
-    }
-
     @GetMapping
     public List<JobApplicationDTO> getAll() {
         return this.jobApplicationService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public JobApplicationDTO getById(@PathVariable Long id) {
+        return this.jobApplicationService.findById(id);
     }
 
     @PatchMapping("/{id}/status")

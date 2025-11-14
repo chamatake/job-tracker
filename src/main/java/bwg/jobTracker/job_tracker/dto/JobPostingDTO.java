@@ -10,7 +10,7 @@ public record JobPostingDTO(
         CompanyDTO company,
         String title,
         String requisitionId,
-        String url,
+        String postingUrl,
         Integer salaryRangeMin,
         Integer salaryRangeMax,
         OfficeSituation officeSituation,

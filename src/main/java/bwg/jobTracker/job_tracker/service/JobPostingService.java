@@ -7,6 +7,7 @@ import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.entity.JobPosting;
 import bwg.jobTracker.job_tracker.exception.JobPostingNotFoundException;
 import bwg.jobTracker.job_tracker.repository.JobPostingRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.Set;
 @Service
 public class JobPostingService {
     private final JobPostingRepository jobPostingRepository;
+    private final ObjectMapper mapper;
 
     public JobPostingService(JobPostingRepository repository) {
         this.jobPostingRepository = repository;
+        this.mapper = new ObjectMapper();
     }
 
     public JobPostingDTO add(JobPostingCreateRequest request) {
@@ -38,7 +41,13 @@ public class JobPostingService {
     }
 
     public List<JobPostingDTO> findAll() {
-        return this.jobPostingRepository.findAll().stream()
+        List<JobPosting> raw = this.jobPostingRepository.findAll();
+        try {
+            System.out.println(this.mapper.writeValueAsString(raw));
+        } catch (Exception ex) {
+            System.out.println("error writing list of JobPosting to JSON string:\n" + ex.getLocalizedMessage());
+        }
+        return raw.stream()
                 .map(MapperUtil::toJobPostingDTO)
                 .toList();
     }

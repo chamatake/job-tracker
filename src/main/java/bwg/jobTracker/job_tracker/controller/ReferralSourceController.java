@@ -30,7 +30,7 @@ public class ReferralSourceController {
         return this.referralSourceService.findAll();
     }
 
-    @GetMapping(params = "referralSourceType")
+    @GetMapping(path = "/source-type", params = "sourceType")
     public List<ReferralSourceDTO> getAllByReferralSourceType(@RequestParam String typeString) {
         try {
             ReferralSourceType referralSourceType = ReferralSourceType.valueOf(typeString.toUpperCase());

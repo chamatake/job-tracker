@@ -21,7 +21,7 @@ public class JobPosting {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "company_id")
     @NonNull private Company company;
 
@@ -45,15 +45,25 @@ public class JobPosting {
     @Column(name = "office_situation")
     private OfficeSituation officeSituation;
 
+    @ElementCollection(targetClass = Technology.class)
     @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "job_posting_required_tech",
+            joinColumns = @JoinColumn(name = "job_posting_id")
+    )
     @Column(name = "required_tech")
     private Set<Technology> requiredTech = new HashSet<>();
 
+    @ElementCollection(targetClass = Technology.class)
     @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "job_posting_preferred_tech",
+            joinColumns = @JoinColumn(name = "job_posting_id")
+    )
     @Column(name = "preferred_tech")
     private Set<Technology> preferredTech = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "referral_source_id")
     private ReferralSource referralSource;
 

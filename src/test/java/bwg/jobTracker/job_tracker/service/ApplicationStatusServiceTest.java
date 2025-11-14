@@ -75,7 +75,7 @@ class ApplicationStatusServiceTest extends BaseTest {
     }
 
     @Test
-    public void testFindAllByStatus() {
+    public void testFindAllByStatusType() {
         JobPosting posting1 = makeJobPostingDummyGandalf();
         JobApplication parent1 = new JobApplication.Builder()
                 .withId(JOB_APPLICATION_ID)
@@ -108,7 +108,7 @@ class ApplicationStatusServiceTest extends BaseTest {
 
         when(repository.findAllByApplicationStatusType(anyString())).thenReturn(existing);
 
-        List<ApplicationStatusDTO> actual = applicationStatusService.findAllByStatus(ApplicationStatusType.CODE_ASSESSMENT.toString());
+        List<ApplicationStatusDTO> actual = applicationStatusService.findAllByStatusType(ApplicationStatusType.CODE_ASSESSMENT.toString());
         assertEquals(existing.size(), actual.size());
         assertTrue(actual.contains(MapperUtil.toApplicationStatusDTO(coding3)));
         assertTrue(actual.contains(MapperUtil.toApplicationStatusDTO(coding1)));

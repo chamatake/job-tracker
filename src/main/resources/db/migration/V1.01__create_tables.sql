@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS company (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	company_name VARCHAR(1000) NOT NULL,
+
 	CONSTRAINT PK_Company PRIMARY KEY (id)
 );
 
@@ -35,6 +36,22 @@ CREATE TABLE IF NOT EXISTS job_posting (
 		REFERENCES referral_source(id) ON UPDATE CASCADE,
 	CONSTRAINT CK_JobPosting_OfficeSituation_enum
 		CHECK (office_situation IN ('HYBRID', 'ONSITE', 'REMOTE', 'UNKNOWN'))
+);
+
+CREATE TABLE IF NOT EXISTS job_posting_required_tech (
+    job_posting_id BIGINT NOT NULL,
+    required_tech VARCHAR(255),
+
+    CONSTRAINT FK_RequiredTech_JobPostingId FOREIGN KEY (job_posting_id)
+        REFERENCES job_posting(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS job_posting_preferred_tech (
+    job_posting_id BIGINT NOT NULL,
+    preferred_tech VARCHAR(255),
+
+    CONSTRAINT FK_PreferredTech_JobPostingId FOREIGN KEY (job_posting_id)
+        REFERENCES job_posting(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS job_application (
