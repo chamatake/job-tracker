@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS job_posting (
 	salary_range_min INT,
 	salary_range_max INT,
 	office_situation VARCHAR(100),
-	required_tech VARCHAR(5000), -- will come as a comma delimited string from Java
-	preferred_tech VARCHAR(5000), -- will come as a comma delimited string from Java
 	referral_source_id BIGINT,
 	`VERSION` BIGINT,
 

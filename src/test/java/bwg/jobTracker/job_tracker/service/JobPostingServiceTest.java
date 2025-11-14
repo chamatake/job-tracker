@@ -2,7 +2,6 @@ package bwg.jobTracker.job_tracker.service;
 
 import bwg.jobTracker.job_tracker.BaseTest;
 import bwg.jobTracker.job_tracker.MapperUtil;
-import bwg.jobTracker.job_tracker.TestDataUtil;
 import bwg.jobTracker.job_tracker.dto.JobPostingDTO;
 import bwg.jobTracker.job_tracker.dto.request.JobPostingCreateRequest;
 import bwg.jobTracker.job_tracker.entity.Company;
@@ -10,7 +9,6 @@ import bwg.jobTracker.job_tracker.entity.JobPosting;
 import bwg.jobTracker.job_tracker.entity.ReferralSource;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
 import bwg.jobTracker.job_tracker.enums.ReferralSourceType;
-import bwg.jobTracker.job_tracker.enums.Technology;
 import bwg.jobTracker.job_tracker.exception.JobPostingNotFoundException;
 import bwg.jobTracker.job_tracker.repository.JobPostingRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,8 +44,6 @@ class JobPostingServiceTest extends BaseTest {
     public void testAdd_happyPath() {
         Company requestCompany = new Company(COMPANY_NAME);
         ReferralSource requestSource = new ReferralSource("Tony Stark", ReferralSourceType.INTERNAL);
-        Set<Technology> preferredTech = TestDataUtil.makeTechSet(3);
-        Set<Technology> requiredTech = TestDataUtil.makeTechSet(5);
 
         JobPostingCreateRequest request = new JobPostingCreateRequest();
         request.setCompany(requestCompany);
@@ -59,13 +54,9 @@ class JobPostingServiceTest extends BaseTest {
         request.setSalaryRangeMax(SALARY_MAX);
         request.setOfficeSituation(OfficeSituation.HYBRID);
         request.setReferralSource(requestSource);
-        request.setPreferredTech(preferredTech);
-        request.setRequiredTech(requiredTech);
 
         JobPosting added = makeJobPostingDummy(requestCompany, requestSource, OfficeSituation.HYBRID);
         added.setId(88888L);
-        added.setPreferredTech(preferredTech);
-        added.setRequiredTech(requiredTech);
 
         when(repository.save(any(JobPosting.class))).thenReturn(added);
 
@@ -79,8 +70,6 @@ class JobPostingServiceTest extends BaseTest {
         assertEquals(request.getSalaryRangeMin(), actual.salaryRangeMin());
         assertEquals(request.getSalaryRangeMax(), actual.salaryRangeMax());
         assertEquals(request.getOfficeSituation(), actual.officeSituation());
-        assertTrue(actual.requiredTech().containsAll(request.getRequiredTech()));
-        assertTrue(actual.preferredTech().containsAll(request.getPreferredTech()));
         assertEquals(MapperUtil.toReferralSourceDTO(request.getReferralSource()), actual.referralSource());
     }
 
@@ -171,8 +160,6 @@ class JobPostingServiceTest extends BaseTest {
         assertEquals(existing.getSalaryRangeMax(), actual.salaryRangeMax());
         assertEquals(existing.getOfficeSituation(), actual.officeSituation());
         assertEquals(MapperUtil.toReferralSourceDTO(existing.getReferralSource()), actual.referralSource());
-        assertTrue(actual.requiredTech().containsAll(existing.getRequiredTech()));
-        assertTrue(actual.preferredTech().containsAll(existing.getPreferredTech()));
     }
 }
 

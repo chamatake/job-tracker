@@ -10,7 +10,6 @@ import bwg.jobTracker.job_tracker.repository.JobPostingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class JobPostingService {
@@ -29,8 +28,6 @@ public class JobPostingService {
         posting.setSalaryRangeMin(request.getSalaryRangeMin());
         posting.setSalaryRangeMax(request.getSalaryRangeMax());
         posting.setOfficeSituation(request.getOfficeSituation());
-        posting.setRequiredTech(Set.copyOf(request.getRequiredTech()));
-        posting.setPreferredTech(Set.copyOf(request.getPreferredTech()));
         posting.setReferralSource(request.getReferralSource());
 
         JobPosting added = this.jobPostingRepository.save(posting);

@@ -3,10 +3,7 @@ package bwg.jobTracker.job_tracker.dto.request;
 import bwg.jobTracker.job_tracker.entity.Company;
 import bwg.jobTracker.job_tracker.entity.ReferralSource;
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
-import bwg.jobTracker.job_tracker.enums.Technology;
 import lombok.*;
-
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,8 +18,6 @@ public class JobPostingCreateRequest {
     private Integer salaryRangeMin;
     private Integer salaryRangeMax;
     @NonNull OfficeSituation officeSituation;
-    private Set<Technology> requiredTech;
-    private Set<Technology> preferredTech;
     @NonNull private ReferralSource referralSource;
 
     public JobPostingCreateRequest(Company company, String title, String url, OfficeSituation officeSituation) {

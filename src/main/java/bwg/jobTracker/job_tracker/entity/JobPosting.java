@@ -1,15 +1,11 @@
 package bwg.jobTracker.job_tracker.entity;
 
 import bwg.jobTracker.job_tracker.enums.OfficeSituation;
-import bwg.jobTracker.job_tracker.enums.Technology;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "job_posting")
@@ -44,14 +40,6 @@ public class JobPosting {
     @Enumerated(EnumType.STRING)
     @Column(name = "office_situation")
     private OfficeSituation officeSituation;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "required_tech")
-    private Set<Technology> requiredTech = new HashSet<>();
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "preferred_tech")
-    private Set<Technology> preferredTech = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "referral_source_id")

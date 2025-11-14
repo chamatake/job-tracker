@@ -6,10 +6,10 @@ INSERT INTO referral_source(id, referral_name, referral_source_type)
     VALUES(2, 'President Shinra', 'INTERNAL');
 INSERT INTO referral_source(id, referral_name, referral_source_type)
     VALUES(3, 'Shinra The App', 'APP');
-INSERT INTO job_posting(id, company_id, title, requisition_id, posting_url, salary_range_min, salary_range_max, office_situation, required_tech, preferred_tech, referral_source_id, `VERSION`)
-    VALUES(1, 2, 'Company President - Interim', 'RSHIN-98874', 'https://shinrapowerco.jp/jobs/RSHIN-98874', null, null, 'ONSITE', null, null, 3, 1);
-INSERT INTO job_posting(id, company_id, title, requisition_id, posting_url, salary_range_min, salary_range_max, office_situation, required_tech, preferred_tech, referral_source_id, `VERSION`)
-    VALUES(2, 1, 'taxes guy', 'JK-000tax000', 'https://wayne.com/careers/taxes-guy', 10000, 150000, 'REMOTE', 'Quickbooks, jk not quickbooks', null, 1, 1);
+INSERT INTO job_posting(id, company_id, title, requisition_id, posting_url, salary_range_min, salary_range_max, office_situation, referral_source_id, `VERSION`)
+    VALUES(1, 2, 'Company President - Interim', 'RSHIN-98874', 'https://shinrapowerco.jp/jobs/RSHIN-98874', null, null, 'ONSITE', 3, 1);
+INSERT INTO job_posting(id, company_id, title, requisition_id, posting_url, salary_range_min, salary_range_max, office_situation, referral_source_id, `VERSION`)
+    VALUES(2, 1, 'taxes guy', 'JK-000tax000', 'https://wayne.com/careers/taxes-guy', 10000, 150000, 'REMOTE', 1, 1);
 
 INSERT INTO job_application(id, job_posting_id, current_status_id, applied_date, resume_filename, cover_letter_filename, `VERSION`)
     VALUES(1, 1, null, '1997-01-31', 'my-resume.pdf', null, 1);

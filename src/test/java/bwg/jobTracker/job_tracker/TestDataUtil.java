@@ -58,15 +58,4 @@ public class TestDataUtil {
 
         return request;
     }
-
-    public static Set<Technology> makeTechSet(int count) {
-        Set<Technology> techs = new HashSet<>();
-        Random randomInts = new Random();
-        Technology[] enumTechs = Technology.values();
-
-        for (int i = 0; i <= count; i++) {
-            techs.add(enumTechs[randomInts.nextInt(enumTechs.length)]);
-        }
-        return techs;
-    }
 }
